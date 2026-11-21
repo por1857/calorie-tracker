@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- App-Icon: Ring aus den drei Makro-Farben auf Tinten-Hintergrund.
+       Bewusst quadratisch ohne Rundung – iOS rundet die Ecken selbst. -->
+  <rect width="512" height="512" fill="#18232B"/>
+  <circle cx="256" cy="256" r="148" fill="none" stroke="#5C93F2" stroke-width="64" stroke-dasharray="263.0 929.9" stroke-dashoffset="0.0" transform="rotate(-108 256 256)"/>
+  <circle cx="256" cy="256" r="148" fill="none" stroke="#E2A53A" stroke-width="64" stroke-dasharray="356.0 929.9" stroke-dashoffset="-279.0" transform="rotate(-108 256 256)"/>
+  <circle cx="256" cy="256" r="148" fill="none" stroke="#E070A9" stroke-width="64" stroke-dasharray="263.0 929.9" stroke-dashoffset="-650.9" transform="rotate(-108 256 256)"/>
+</svg>

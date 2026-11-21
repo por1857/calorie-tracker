@@ -1,0 +1,17 @@
+# Einheitliche Formatierung in jedem Editor (IntelliJ liest diese Datei)
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Java und Gradle (Backend): 4 Leerzeichen, wie IntelliJ-Standard
+[*.{java,kts,gradle}]
+indent_size = 4
+
+[*.md]
+trim_trailing_whitespace = false

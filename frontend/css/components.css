@@ -1,0 +1,443 @@
+/* ==========================================================================
+   components.css – Bausteine der Oberfläche
+   --------------------------------------------------------------------------
+   Jeder Baustein hat einen eigenen Klassennamen (z. B. .readout, .meter).
+   Varianten hängen mit "--" dran (z. B. .button--primary).
+   Teile innerhalb eines Bausteins mit "__" (z. B. .readout__value).
+   Diese Schreibweise heißt BEM und verhindert, dass sich Regeln
+   gegenseitig überschreiben.
+   ========================================================================== */
+
+/* ---- Seitenlayout ------------------------------------------------------ */
+.app {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding: var(--space-2) var(--space-4);
+  /* Platz unten für Tab-Leiste + Plus-Knopf + Home-Balken */
+  padding-bottom: calc(150px + env(safe-area-inset-bottom));
+}
+
+/* ---- Kopfzeile mit Datumsnavigation ---------------------------------- */
+.daybar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding-block: var(--space-2) var(--space-4);
+}
+
+.daybar__title {
+  font-size: var(--text-xl);
+  text-align: center;
+  flex: 1;
+}
+
+.daybar__sub {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  color: var(--color-muted);
+}
+
+/* ---- Runder Icon-Knopf (z. B. Tag vor/zurück) ------------------------ */
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-ink);
+  transition: background-color var(--duration-fast);
+}
+
+.icon-button:active {
+  background: var(--color-track);
+}
+
+.icon-button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.icon-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ---- Anzeigefeld ("Waagen-Display") ---------------------------------- */
+/* Das EINE auffällige Element der App. Alles andere bleibt ruhig. */
+.readout {
+  background: var(--color-readout);
+  color: var(--color-readout-text);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-5) var(--space-4);
+}
+
+.readout__label {
+  font-size: var(--text-sm);
+  color: var(--color-readout-muted);
+}
+
+.readout__value {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-block: var(--space-1) var(--space-4);
+  font-size: var(--text-display);
+  font-weight: var(--weight-bold);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.readout__unit {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0;
+  color: var(--color-readout-muted);
+}
+
+/* Ziel überschritten: Zahl wird rot */
+.readout--over .readout__value {
+  color: var(--color-readout-danger);
+}
+
+.readout .meter--over {
+  --meter-color: var(--color-readout-danger);
+}
+
+.readout__footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-readout-muted);
+}
+
+/* ---- Fortschrittsbalken ----------------------------------------------- */
+/* Breite wird per JavaScript über die Variable --fill gesetzt (0 bis 1). */
+.meter {
+  --fill: 0;
+  --meter-color: var(--color-kcal);
+  height: var(--meter-height);
+  border-radius: var(--radius-sm);
+  background: var(--color-track);
+  overflow: hidden;
+}
+
+.meter__bar {
+  height: 100%;
+  width: calc(var(--fill) * 100%);
+  background: var(--meter-color);
+  border-radius: inherit;
+  transition: width var(--duration-base) var(--ease-out);
+}
+
+.meter--on-readout { background: var(--color-readout-track); }
+.meter--protein    { --meter-color: var(--color-protein); }
+.meter--carbs      { --meter-color: var(--color-carbs); }
+.meter--fat        { --meter-color: var(--color-fat); }
+.meter--over       { --meter-color: var(--color-danger); }
+
+/* ---- Makro-Übersicht --------------------------------------------------- */
+.macros {
+  display: grid;
+  /* minmax(0, 1fr): Spalten dürfen schmaler werden als ihr Text */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-1);
+  list-style: none;
+}
+
+.macro__name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+/* Auf normalen und kleinen iPhones etwas kleiner, damit "Kohlenhydrate" passt */
+@media (max-width: 400px) {
+  .macro__name { font-size: var(--text-xs); gap: var(--space-1); }
+  .macro__value { font-size: var(--text-md); }
+}
+
+/* Sehr schmal (z. B. große Systemschrift): Makros untereinander */
+@media (max-width: 340px) {
+  .macros { grid-template-columns: 1fr; }
+}
+
+/* kleiner Farbpunkt neben dem Namen */
+.macro__name::before {
+  content: "";
+  flex-shrink: 0; /* Punkt nie wegquetschen */
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dot-color, var(--color-muted));
+}
+
+.macro--protein { --dot-color: var(--color-protein); }
+.macro--carbs   { --dot-color: var(--color-carbs); }
+.macro--fat     { --dot-color: var(--color-fat); }
+
+.macro__value {
+  margin-block: var(--space-1) var(--space-2);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+}
+
+.macro__goal {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  color: var(--color-muted);
+}
+
+/* ---- Mahlzeiten -------------------------------------------------------- */
+/* Bewusst keine Karten, sondern Liste mit Trennlinien – ruhiger. */
+.meal {
+  border-top: 1px solid var(--color-line);
+  padding-block: var(--space-4);
+}
+
+.meal__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.meal__title {
+  font-size: var(--text-lg);
+}
+
+.meal__total {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+.meal__list {
+  list-style: none;
+  padding: 0;
+}
+
+.meal__empty {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+/* Eine Zeile = ein Eintrag (wird ab Schritt 3 benutzt) */
+.entry {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: var(--tap-min);
+  align-items: center;
+  padding-block: var(--space-2);
+}
+
+.entry + .entry {
+  border-top: 1px solid var(--color-line);
+}
+
+.entry__meta {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+.entry__kcal {
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+}
+
+/* ---- Buttons ----------------------------------------------------------- */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--tap-min);
+  padding: var(--space-2) var(--space-5);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  font-weight: var(--weight-bold);
+  transition: transform var(--duration-fast), opacity var(--duration-fast);
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+
+.button:disabled {
+  opacity: 0.4;
+  cursor: default;
+  transform: none;
+}
+
+.button--primary {
+  background: var(--color-ink);
+  color: var(--color-on-ink);
+}
+
+.button--secondary {
+  background: transparent;
+  border-color: var(--color-line);
+  color: var(--color-ink);
+}
+
+.button--danger {
+  background: transparent;
+  color: var(--color-danger);
+}
+
+.button--block {
+  width: 100%;
+}
+
+/* ---- Schwebender Plus-Knopf ------------------------------------------- */
+.fab {
+  position: fixed;
+  right: max(var(--space-4), env(safe-area-inset-right));
+  bottom: calc(72px + env(safe-area-inset-bottom));
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-ink);
+  color: var(--color-on-ink);
+  box-shadow: var(--shadow-float);
+  transition: transform var(--duration-fast);
+}
+
+.fab:active {
+  transform: scale(0.94);
+}
+
+.fab svg {
+  width: 28px;
+  height: 28px;
+}
+
+/* ---- Eingabefelder ----------------------------------------------------- */
+.field {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.field__label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+.field__control {
+  position: relative;
+}
+
+.field__input {
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  font-size: max(16px, var(--text-md)); /* < 16px = Safari zoomt rein */
+}
+
+.field__input:focus {
+  outline: none;
+  border-color: var(--color-ink);
+}
+
+/* Einheit rechts im Feld, z. B. "g" */
+.field__unit {
+  position: absolute;
+  right: var(--space-4);
+  top: 50%;
+  translate: 0 -50%;
+  color: var(--color-muted);
+  pointer-events: none;
+}
+
+.field__control:has(.field__unit) .field__input {
+  padding-right: var(--space-7);
+}
+
+.field__hint {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+
+.field__error {
+  font-size: var(--text-xs);
+  color: var(--color-danger);
+}
+
+.field--invalid .field__input {
+  border-color: var(--color-danger);
+}
+
+/* ---- Tab-Leiste unten ------------------------------------------------- */
+.tabbar {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  padding: var(--space-1) var(--space-4);
+  padding-bottom: max(var(--space-2), env(safe-area-inset-bottom));
+  background: color-mix(in srgb, var(--color-paper) 88%, transparent);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid var(--color-line);
+}
+
+.tabbar__item {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  min-width: 72px;
+  min-height: var(--tap-min);
+  padding: var(--space-1);
+  border: 0;
+  background: none;
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+
+.tabbar__item svg {
+  width: 24px;
+  height: 24px;
+}
+
+.tabbar__item[aria-current="page"] {
+  color: var(--color-ink);
+  font-weight: var(--weight-bold);
+}
+
+/* ---- Kurze Rückmeldung ("Toast") --------------------------------------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(150px + env(safe-area-inset-bottom));
+  translate: -50% 8px;
+  max-width: calc(100% - 2 * var(--space-4));
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--color-ink);
+  color: var(--color-on-ink);
+  font-size: var(--text-sm);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-base), translate var(--duration-base) var(--ease-out);
+}
+
+.toast--visible {
+  opacity: 1;
+  translate: -50% 0;
+}

@@ -1,0 +1,47 @@
+# Frontend: bei jedem Push testen, und nur wenn alles grün ist veröffentlichen.
+# Einmalig einrichten: Repo → Settings → Pages → Source: "GitHub Actions".
+
+name: Frontend
+
+on:
+  push:
+    branches: [main, master]
+    paths: ["frontend/**", ".github/workflows/frontend.yml"]
+  workflow_dispatch: # manuell starten: Tab "Actions" → Frontend → Run workflow
+
+permissions:
+  contents: read
+
+# Nie zwei Veröffentlichungen gleichzeitig
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v6
+      - run: node --version
+      - run: npm test
+
+  deploy:
+    needs: test # ohne grüne Tests keine Veröffentlichung
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: frontend
+      - id: deployment
+        uses: actions/deploy-pages@v4

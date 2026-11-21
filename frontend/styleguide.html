@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="de-AT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Styleguide – Kalorien</title>
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'none'">
+  <!--
+    Lebender Styleguide: zeigt alle Bausteine mit den ECHTEN CSS-Dateien der App.
+    Ändert sich eine Farbe in tokens.css, siehst du es hier sofort.
+    Aufruf: <deine-adresse>/styleguide.html
+  -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/styleguide.css">
+</head>
+<body>
+  <main class="app sg">
+    <h1 class="sg__title">Styleguide</h1>
+    <p class="sg__intro">Alle Bausteine der App an einem Ort. Regeln dazu stehen in docs/STYLEGUIDE.md.</p>
+
+    <section class="sg__section">
+      <h2>Farben</h2>
+      <ul class="sg__swatches">
+        <li><span class="sg__swatch sg__swatch--paper"></span>Papier<code>--color-paper</code></li>
+        <li><span class="sg__swatch sg__swatch--surface"></span>Fläche<code>--color-surface</code></li>
+        <li><span class="sg__swatch sg__swatch--ink"></span>Tinte<code>--color-ink</code></li>
+        <li><span class="sg__swatch sg__swatch--muted"></span>Nebentext<code>--color-muted</code></li>
+        <li><span class="sg__swatch sg__swatch--line"></span>Linie<code>--color-line</code></li>
+        <li><span class="sg__swatch sg__swatch--kcal"></span>Kalorien<code>--color-kcal</code></li>
+        <li><span class="sg__swatch sg__swatch--protein"></span>Protein<code>--color-protein</code></li>
+        <li><span class="sg__swatch sg__swatch--carbs"></span>Kohlenhydrate<code>--color-carbs</code></li>
+        <li><span class="sg__swatch sg__swatch--fat"></span>Fett<code>--color-fat</code></li>
+        <li><span class="sg__swatch sg__swatch--danger"></span>Achtung<code>--color-danger</code></li>
+      </ul>
+    </section>
+
+    <section class="sg__section">
+      <h2>Schrift</h2>
+      <p class="sg__type sg__type--display num">1 240</p>
+      <p class="sg__type sg__type--xl">Seitentitel 24</p>
+      <p class="sg__type sg__type--lg">Abschnitt 20</p>
+      <p class="sg__type sg__type--md">Fließtext 17: Haferflocken mit Milch und Banane.</p>
+      <p class="sg__type sg__type--sm">Nebentext 15: 80 g, Frühstück</p>
+      <p class="sg__type sg__type--xs">Fußnote 13: Werte pro 100 g</p>
+    </section>
+
+    <section class="sg__section">
+      <h2>Anzeigefeld</h2>
+      <div class="readout">
+        <p class="readout__label">Noch übrig</p>
+        <p class="readout__value num">1 126 <span class="readout__unit">kcal</span></p>
+        <div class="meter meter--on-readout sg__fill-45"><div class="meter__bar"></div></div>
+        <p class="readout__footer num"><span>874 gegessen</span><span>Ziel 2 000</span></p>
+      </div>
+      <div class="readout readout--over sg__gap">
+        <p class="readout__label">Über dem Ziel</p>
+        <p class="readout__value num">250 <span class="readout__unit">kcal</span></p>
+        <div class="meter meter--on-readout meter--over sg__fill-100"><div class="meter__bar"></div></div>
+        <p class="readout__footer num"><span>2 250 gegessen</span><span>Ziel 2 000</span></p>
+      </div>
+    </section>
+
+    <section class="sg__section">
+      <h2>Makros und Balken</h2>
+      <ul class="macros">
+        <li class="macro macro--protein">
+          <span class="macro__name">Protein</span>
+          <p class="macro__value num">66 <span class="macro__goal">/ 150 g</span></p>
+          <div class="meter meter--protein sg__fill-45"><div class="meter__bar"></div></div>
+        </li>
+        <li class="macro macro--carbs">
+          <span class="macro__name">Kohlenhydrate</span>
+          <p class="macro__value num">115 <span class="macro__goal">/ 220 g</span></p>
+          <div class="meter meter--carbs sg__fill-50"><div class="meter__bar"></div></div>
+        </li>
+        <li class="macro macro--fat">
+          <span class="macro__name">Fett</span>
+          <p class="macro__value num">13 <span class="macro__goal">/ 70 g</span></p>
+          <div class="meter meter--fat sg__fill-20"><div class="meter__bar"></div></div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="sg__section">
+      <h2>Mahlzeit</h2>
+      <section class="meal">
+        <header class="meal__header"><h3 class="meal__title">Frühstück</h3><span class="meal__total num">416 kcal</span></header>
+        <ul class="meal__list">
+          <li class="entry"><div><span>Haferflocken</span><span class="entry__meta num">80 g</span></div><span class="entry__kcal num">298 kcal</span></li>
+          <li class="entry"><div><span>Milch 1,5 %</span><span class="entry__meta num">250 g</span></div><span class="entry__kcal num">118 kcal</span></li>
+        </ul>
+      </section>
+      <section class="meal">
+        <header class="meal__header"><h3 class="meal__title">Snacks</h3><span class="meal__total num"></span></header>
+        <p class="meal__empty">Noch nichts eingetragen.</p>
+      </section>
+    </section>
+
+    <section class="sg__section">
+      <h2>Buttons</h2>
+      <div class="sg__row">
+        <button class="button button--primary" type="button">Eintragen</button>
+        <button class="button button--secondary" type="button">Abbrechen</button>
+        <button class="button button--danger" type="button">Löschen</button>
+        <button class="button button--primary" type="button" disabled>Eintragen</button>
+      </div>
+    </section>
+
+    <section class="sg__section">
+      <h2>Eingabefelder</h2>
+      <div class="sg__stack">
+        <label class="field">
+          <span class="field__label">Menge</span>
+          <span class="field__control">
+            <input class="field__input num" type="text" inputmode="decimal" value="80">
+            <span class="field__unit">g</span>
+          </span>
+          <span class="field__hint">Komma oder Punkt, beides geht.</span>
+        </label>
+        <label class="field field--invalid">
+          <span class="field__label">Kalorien pro 100 g</span>
+          <span class="field__control">
+            <input class="field__input num" type="text" inputmode="decimal" value="abc" aria-invalid="true">
+            <span class="field__unit">kcal</span>
+          </span>
+          <span class="field__error">Gib eine Zahl ein, zum Beispiel 372.</span>
+        </label>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,30 @@
+# --- Frontend ---
+node_modules/
+
+# --- Backend (Java / Gradle) ---
+build/
+.gradle/
+out/
+*.class
+
+# --- Geheime Schlüssel und lokale Einstellungen: NIE ins Repo ---
+.env
+.env.*
+!.env.example
+application-local.properties
+
+# --- Persönliche Daten: Backups der App NIE ins Repo ---
+kalorien-backup-*.json
+*.backup.json
+
+# --- Editoren (IntelliJ legt diese Dateien selbst an) ---
+.idea/
+*.iml
+
+# --- Betriebssystem ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Logs ---
+*.log

@@ -1,0 +1,117 @@
+/* ==========================================================================
+   tokens.css – Design-Tokens (die "Einzelteile" des Styleguides)
+   --------------------------------------------------------------------------
+   Hier stehen ALLE Farben, Schriftgrößen, Abstände und Radien als
+   CSS-Variablen. Andere CSS-Dateien verwenden nur diese Variablen,
+   nie feste Werte. Willst du z. B. die Protein-Farbe ändern, änderst du
+   sie nur hier – und sie ändert sich überall.
+
+   Doku dazu: docs/STYLEGUIDE.md   Vorschau: styleguide.html
+   ========================================================================== */
+
+:root {
+  /* ---- Farben: Grundpalette (hell) ------------------------------------ */
+  --color-paper:   #EEF1F0;  /* Seitenhintergrund, kühles Papiergrau      */
+  --color-surface: #FFFFFF;  /* Flächen, Eingabefelder                    */
+  --color-ink:     #18232B;  /* Haupttext, primäre Buttons                */
+  --color-muted:   #56656D;  /* Nebentext, Einheiten, Hinweise            */
+  --color-line:    #D3DADA;  /* Trennlinien, Rahmen                       */
+  --color-track:   #DDE3E2;  /* Hintergrund leerer Fortschrittsbalken     */
+
+  /* Anzeigefeld ("Waagen-Display") */
+  --color-readout:      #18232B;
+  --color-readout-text: #EAF3EE;
+  --color-readout-muted:#9FB2AB;
+  --color-readout-track:#2C3A42;
+  --color-readout-danger:#FF7B6B; /* helleres Rot, weil das Feld dunkel ist */
+
+  /* ---- Farben: Bedeutung --------------------------------------------- */
+  --color-kcal:    #1E8A5A;  /* Kalorien / "noch übrig" / Erfolg          */
+  --color-protein: #2F6FD6;  /* Protein: Blau                             */
+  --color-carbs:   #C9850C;  /* Kohlenhydrate: Senfgelb                   */
+  --color-fat:     #B8407F;  /* Fett: Magenta                             */
+  --color-danger:  #C62D1F;  /* Ziel überschritten, Löschen, Fehler       */
+
+  /* Text, der AUF einer farbigen Fläche steht */
+  --color-on-ink:  #FFFFFF;
+
+  /* ---- Schrift --------------------------------------------------------- */
+  /* ui-rounded = SF Pro Rounded auf iPhone/Mac. Auf Windows/Android
+     greift automatisch die normale Systemschrift. Keine Webfonts:
+     funktioniert offline und lädt nichts von fremden Servern. */
+  --font-family: ui-rounded, "SF Pro Rounded", system-ui, -apple-system,
+                 "Segoe UI", Roboto, sans-serif;
+
+  /* Schriftgrößen (Faktor ca. 1,2 zwischen den Stufen).
+     WICHTIG: Eingabefelder nie unter 16px, sonst zoomt Safari beim Tippen. */
+  --text-xs:      0.8125rem; /* 13px  Fußnoten                            */
+  --text-sm:      0.9375rem; /* 15px  Nebentext, Labels                   */
+  --text-md:      1.0625rem; /* 17px  Fließtext (iOS-Standard)            */
+  --text-lg:      1.25rem;   /* 20px  Abschnittstitel                     */
+  --text-xl:      1.5rem;    /* 24px  Seitentitel                         */
+  --text-display: 3.5rem;    /* 56px  große Zahl im Anzeigefeld           */
+
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-bold:    650;
+
+  --leading-tight: 1.15;
+  --leading-body:  1.45;
+
+  /* ---- Abstände (4er-Raster) ---------------------------------------- */
+  --space-1: 0.25rem; /*  4px */
+  --space-2: 0.5rem;  /*  8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem;    /* 16px  Standard-Seitenrand */
+  --space-5: 1.5rem;  /* 24px */
+  --space-6: 2rem;    /* 32px */
+  --space-7: 3rem;    /* 48px */
+
+  /* ---- Radien: je wichtiger die Fläche, desto runder ----------------- */
+  --radius-sm:   8px;    /* Balken, kleine Elemente  */
+  --radius-md:   12px;   /* Eingabefelder            */
+  --radius-lg:   22px;   /* Anzeigefeld              */
+  --radius-full: 999px;  /* Buttons, runde Knöpfe    */
+
+  /* ---- Größen --------------------------------------------------------- */
+  --tap-min:     44px;   /* Mindestgröße für alles Antippbare (Apple-Vorgabe) */
+  --meter-height: 8px;
+  --content-max: 34rem;  /* maximale Breite auf großen Bildschirmen */
+
+  /* ---- Bewegung ------------------------------------------------------- */
+  --duration-fast: 120ms;
+  --duration-base: 220ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* ---- Schatten (nur für schwebende Elemente) ---------------------- */
+  --shadow-float: 0 6px 20px rgb(24 35 43 / 0.22);
+
+  color-scheme: light dark;
+}
+
+/* ---- Dunkelmodus: folgt automatisch der iPhone-Einstellung ------------ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-paper:   #0E1417;
+    --color-surface: #172125;
+    --color-ink:     #E6EDEC;
+    --color-muted:   #93A3A6;
+    --color-line:    #26333A;
+    --color-track:   #24323A;
+
+    --color-readout:      #1B282F;
+    --color-readout-text: #EAF3EE;
+    --color-readout-muted:#93A8A0;
+    --color-readout-track:#2F3F48;
+
+    --color-kcal:    #3DBB84;
+    --color-protein: #6A9BF0;
+    --color-carbs:   #E2A53A;
+    --color-fat:     #E070A9;
+    --color-danger:  #F0685B;
+
+    --color-on-ink:  #0E1417;
+
+    --shadow-float: 0 6px 20px rgb(0 0 0 / 0.5);
+  }
+}
