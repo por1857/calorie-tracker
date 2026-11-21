@@ -110,6 +110,33 @@
     </section>
 
     <section class="sg__section">
+      <h2>Auswahl und Listen</h2>
+      <div class="sg__stack">
+        <fieldset class="segmented">
+          <legend class="visually-hidden">Mahlzeit</legend>
+          <label class="segmented__option"><input type="radio" name="sg-meal" checked><span>Frühstück</span></label>
+          <label class="segmented__option"><input type="radio" name="sg-meal"><span>Mittag</span></label>
+          <label class="segmented__option"><input type="radio" name="sg-meal"><span>Abend</span></label>
+          <label class="segmented__option"><input type="radio" name="sg-meal"><span>Snack</span></label>
+        </fieldset>
+        <div class="food-group">
+          <h3 class="food-group__label">Zuletzt verwendet</h3>
+          <ul class="food-list">
+            <li><button class="food-option" type="button"><span class="food-option__name">Haferflocken</span><span class="food-option__meta num">372 kcal/100 g</span></button></li>
+            <li><button class="food-option" type="button"><span class="food-option__name">Reis gekocht</span><span class="food-option__meta num">130 kcal/100 g</span></button></li>
+          </ul>
+        </div>
+        <ul class="macros macros--compact">
+          <li class="macro macro--kcal"><span class="macro__name">Kalorien</span><p class="macro__value num">298</p></li>
+          <li class="macro macro--protein"><span class="macro__name">Protein</span><p class="macro__value num">11 g</p></li>
+          <li class="macro macro--carbs"><span class="macro__name">Kohlenh.</span><p class="macro__value num">47 g</p></li>
+          <li class="macro macro--fat"><span class="macro__name">Fett</span><p class="macro__value num">5,6 g</p></li>
+        </ul>
+        <button class="button button--ghost" type="button">Abbrechen</button>
+      </div>
+    </section>
+
+    <section class="sg__section">
       <h2>Eingabefelder</h2>
       <div class="sg__stack">
         <label class="field">

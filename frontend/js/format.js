@@ -6,6 +6,7 @@
  */
 
 import { fromDateKey } from './dates.js';
+import { roundTo } from './calc.js';
 
 const LOCALE = 'de-AT';
 
@@ -25,6 +26,20 @@ export function formatKcal(value) {
 export function formatGrams(value) {
   const formatter = Math.abs(value) < 10 ? oneDecimal : wholeNumber;
   return formatter.format(value).replace(/^-0$/, '0');
+}
+
+/** Mengen wie eingegeben: höchstens eine Nachkommastelle. 50.5 → "50,5", 80 → "80" */
+export function formatAmount(value) {
+  return oneDecimal.format(value);
+}
+
+/**
+ * Zahl für ein Eingabefeld: höchstens eine Nachkommastelle, Komma statt Punkt,
+ * keine Tausendertrennung (damit parseAmount sie wieder lesen kann).
+ * 80 → "80", 12.45 → "12,5"
+ */
+export function formatInputNumber(value) {
+  return String(roundTo(value, 1)).replace('.', ',');
 }
 
 /**

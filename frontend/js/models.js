@@ -24,15 +24,41 @@ import { parseAmount, scaleNutrients } from './calc.js';
 
 // ---- Feste Werte ------------------------------------------------------------
 
-/** Mahlzeiten in Anzeigereihenfolge. id = gespeichert, label = angezeigt. */
+/**
+ * Mahlzeiten in Anzeigereihenfolge.
+ * id = gespeichert, label = Überschrift, shortLabel = für schmale Auswahlknöpfe.
+ */
 export const MEALS = Object.freeze([
-  Object.freeze({ id: 'breakfast', label: 'Frühstück' }),
-  Object.freeze({ id: 'lunch', label: 'Mittagessen' }),
-  Object.freeze({ id: 'dinner', label: 'Abendessen' }),
-  Object.freeze({ id: 'snack', label: 'Snacks' }),
+  Object.freeze({ id: 'breakfast', label: 'Frühstück', shortLabel: 'Frühstück' }),
+  Object.freeze({ id: 'lunch', label: 'Mittagessen', shortLabel: 'Mittag' }),
+  Object.freeze({ id: 'dinner', label: 'Abendessen', shortLabel: 'Abend' }),
+  Object.freeze({ id: 'snack', label: 'Snacks', shortLabel: 'Snack' }),
 ]);
 
 export const MEAL_IDS = Object.freeze(MEALS.map((m) => m.id));
+
+/**
+ * Uhrzeiten (in Minuten ab Mitternacht), ab denen eine Mahlzeit vorgeschlagen
+ * wird. Alles außerhalb dieser Fenster gilt als Snack.
+ */
+const MEAL_WINDOWS = Object.freeze([
+  Object.freeze({ meal: 'breakfast', from: 4 * 60, until: 10 * 60 + 30 }),
+  Object.freeze({ meal: 'lunch', from: 10 * 60 + 30, until: 14 * 60 + 30 }),
+  Object.freeze({ meal: 'dinner', from: 17 * 60, until: 21 * 60 + 30 }),
+]);
+
+/**
+ * Schlägt die passende Mahlzeit zur Uhrzeit vor (lokale Zeit).
+ * 8:00 → Frühstück, 12:30 → Mittag, 19:00 → Abend, 16:00 oder 23:00 → Snack.
+ *
+ * @param {Date} [date=new Date()]
+ * @returns {string} eine der MEAL_IDS
+ */
+export function suggestMeal(date = new Date()) {
+  const minutes = date.getHours() * 60 + date.getMinutes();
+  const slot = MEAL_WINDOWS.find(({ from, until }) => minutes >= from && minutes < until);
+  return slot?.meal ?? 'snack';
+}
 
 /** Standard-Tagesziele, bis man eigene einstellt. */
 export const DEFAULT_GOALS = Object.freeze({ kcal: 2000, protein: 150, carbs: 220, fat: 70 });

@@ -63,6 +63,13 @@ h1, h2, h3 {
   text-wrap: balance;
 }
 
+/* ---- hidden-Attribut gilt immer ------------------------------------- */
+/* Ohne diese Regel würde z. B. .icon-button { display: inline-grid }
+   ein Element mit hidden trotzdem anzeigen. */
+[hidden] {
+  display: none !important;
+}
+
 /* ---- Zahlen ------------------------------------------------------------ */
 /* Ziffern gleich breit, damit Werte beim Ändern nicht "springen" */
 .num {

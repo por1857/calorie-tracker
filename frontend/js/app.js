@@ -18,9 +18,10 @@
 
 import { sumNutrients, remaining, progress, NUTRIENT_KEYS } from './calc.js';
 import { toDateKey, addDays } from './dates.js';
-import { formatKcal, formatGrams, formatDayHeading } from './format.js';
+import { formatKcal, formatGrams, formatAmount, formatDayHeading } from './format.js';
 import { MEALS, createFood, createEntryFromFood } from './models.js';
 import { openStore } from './storage/store.js';
+import { createEntrySheet } from './ui/entry-sheet.js';
 
 // ---- Zustand ------------------------------------------------------------
 
@@ -32,6 +33,7 @@ const state = {
 
 /** @type {import('./storage/store.js').Store} */
 let store;
+let entrySheet;
 
 // ---- HTML-Elemente einmal suchen -----------------------------------------
 
@@ -135,11 +137,18 @@ function renderMeals() {
   }
 }
 
-/** Baut eine Zeile für einen Eintrag – nur mit textContent (siehe oben). */
+/**
+ * Baut eine Zeile für einen Eintrag – nur mit textContent (siehe oben).
+ * Die Zeile ist ein Knopf: Antippen fragt, ob der Eintrag gelöscht werden soll.
+ */
 function createEntryRow(entry) {
   const li = document.createElement('li');
   li.className = 'entry';
-  li.dataset.id = entry.id; // für Bearbeiten/Löschen in Schritt 5
+
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'entry__button';
+  button.addEventListener('click', () => confirmDeleteEntry(entry));
 
   const left = document.createElement('div');
   const name = document.createElement('span');
@@ -149,7 +158,7 @@ function createEntryRow(entry) {
   if (entry.grams != null) { // Schnelleinträge haben keine Gramm
     const meta = document.createElement('span');
     meta.className = 'entry__meta num';
-    meta.textContent = `${formatGrams(entry.grams)} g`;
+    meta.textContent = `${formatAmount(entry.grams)} g`;
     left.append(meta);
   }
 
@@ -157,8 +166,17 @@ function createEntryRow(entry) {
   kcal.className = 'entry__kcal num';
   kcal.textContent = `${formatKcal(entry.kcal)} kcal`;
 
-  li.append(left, kcal);
+  button.append(left, kcal);
+  li.append(button);
   return li;
+}
+
+async function confirmDeleteEntry(entry) {
+  // confirm() ist die eingebaute Rückfrage des Browsers; am iPhone ein System-Dialog
+  if (!confirm(`„${entry.name}“ löschen?`)) return;
+  await store.deleteEntry(entry.id);
+  await render();
+  showToast('Gelöscht');
 }
 
 async function render() {
@@ -191,7 +209,7 @@ function bindEvents() {
     render();
   });
 
-  el.addEntry.addEventListener('click', () => showToast('Kommt in Schritt 3'));
+  el.addEntry.addEventListener('click', () => entrySheet.open());
 
   for (const tab of document.querySelectorAll('[data-tab]:not([aria-current])')) {
     tab.addEventListener('click', () => showToast('Kommt in einem späteren Schritt'));
@@ -210,6 +228,15 @@ async function start() {
   const isDemo = new URLSearchParams(location.search).has('demo');
   store = await openStore({ temporary: isDemo });
   if (isDemo) await seedDemo();
+
+  entrySheet = createEntrySheet({
+    store,
+    getDayKey: () => state.dayKey,
+    onSaved: async () => {
+      await render();
+      showToast('Eingetragen');
+    },
+  });
 
   bindEvents();
   await render();

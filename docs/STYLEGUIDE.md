@@ -65,11 +65,16 @@ Alles andere bleibt ruhig, damit ein Eintrag in wenigen Sekunden erledigt ist.
 | `.meter` | Fortschrittsbalken, Füllung über `--fill` (0 bis 1) |
 | `.macros`, `.macro` | Makro-Übersicht in drei Spalten |
 | `.meal`, `.entry` | Mahlzeit mit ihren Einträgen |
-| `.button` | `--primary`, `--secondary`, `--danger`, `--block` |
+| `.button` | `--primary`, `--secondary`, `--ghost`, `--danger`, `--block` |
 | `.icon-button` | runder Knopf nur mit Symbol (braucht `aria-label`) |
 | `.fab` | schwebender Plus-Knopf |
 | `.field` | Label + Eingabe + Hinweis/Fehler, Variante `--invalid` |
 | `.tabbar` | Tab-Leiste unten |
+| `.sheet` | Fenster von unten, fast bildschirmhoch (Tastatur verdeckt nichts) |
+| `.segmented` | Auswahl in Segmenten, echte Radios darunter |
+| `.food-list`, `.food-option` | antippbare Liste von Lebensmitteln |
+| `.macros--compact` | Nährwerte in vier Spalten, z. B. Vorschau einer Menge |
+| `.field-row` | drei Felder nebeneinander |
 | `.toast` | kurze Rückmeldung |
 
 Benennung nach **BEM**: `.block`, `.block__teil`, `.block--variante`.

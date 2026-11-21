@@ -180,6 +180,7 @@
   background: var(--dot-color, var(--color-muted));
 }
 
+.macro--kcal    { --dot-color: var(--color-kcal); }
 .macro--protein { --dot-color: var(--color-protein); }
 .macro--carbs   { --dot-color: var(--color-carbs); }
 .macro--fat     { --dot-color: var(--color-fat); }
@@ -440,4 +441,228 @@
 .toast--visible {
   opacity: 1;
   translate: -50% 0;
+}
+
+/* ---- Leere Fehlermeldungen nehmen keinen Platz ein ------------------- */
+.field__error:empty {
+  display: none;
+}
+
+/* ---- Mehrere Felder nebeneinander (z. B. Makros) ---------------------- */
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+/* ---- Unauffälliger Text-Knopf (z. B. "Abbrechen") --------------------- */
+.button--ghost {
+  background: transparent;
+  color: var(--color-ink);
+  font-weight: var(--weight-medium);
+  padding-inline: var(--space-3);
+}
+
+/* ---- Fenster von unten ("Sheet") --------------------------------------- */
+/* Fast bildschirmhoch und oben ausgerichtet: So bleiben Eingabefeld und
+   Knopf sichtbar, auch wenn am iPhone die Tastatur aufgeht. */
+.sheet {
+  width: 100%;
+  max-width: var(--content-max);
+  height: calc(100dvh - max(var(--space-4), env(safe-area-inset-top)));
+  max-height: none;
+  margin: auto auto 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-float);
+}
+
+.sheet[open] {
+  display: flex;
+  flex-direction: column;
+  animation: sheet-in var(--duration-base) var(--ease-out);
+}
+
+.sheet::backdrop {
+  background: rgb(0 0 0 / 0.4);
+}
+
+@keyframes sheet-in {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+.sheet__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 56px;
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--color-line);
+}
+
+/* Zurück-Knopf sichtbar: Titel rückt nicht doppelt ein */
+.sheet__header:has(#sheet-back:not([hidden])) {
+  padding-left: var(--space-1);
+}
+
+.sheet__title {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-md);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sheet__body {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-4);
+  padding-bottom: calc(var(--space-6) + env(safe-area-inset-bottom));
+}
+
+.sheet__view {
+  display: grid;
+  gap: var(--space-4);
+}
+
+
+/* ---- Auswahl in Segmenten (z. B. Mahlzeit) ------------------------------ */
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-1);
+  margin: 0;
+  padding: var(--space-1);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-track);
+}
+
+.segmented__option {
+  position: relative;
+}
+
+/* Das echte Radio bleibt für Tastatur und VoiceOver da, nur unsichtbar */
+.segmented__option input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+}
+
+.segmented__option span {
+  display: grid;
+  place-items: center;
+  min-height: 40px;
+  padding-inline: var(--space-1);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.segmented__option input:checked + span {
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-weight: var(--weight-bold);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.12);
+}
+
+.segmented__option input:focus-visible + span {
+  outline: 3px solid var(--color-protein);
+  outline-offset: 1px;
+}
+
+/* ---- Lebensmittel-Liste zum Auswählen -------------------------------- */
+
+.food-group__label {
+  margin-bottom: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-muted);
+}
+
+.food-list {
+  list-style: none;
+  padding: 0;
+}
+
+.food-list li + li {
+  border-top: 1px solid var(--color-line);
+}
+
+.food-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: var(--space-3) 0;
+  border: 0;
+  background: none;
+  text-align: left;
+}
+
+.food-option__name {
+  font-weight: var(--weight-medium);
+}
+
+.food-option__meta {
+  flex-shrink: 0;
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+.food-option:active {
+  opacity: 0.6;
+}
+
+/* ---- Menge eingeben --------------------------------------------------- */
+.amount__food {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+}
+
+/* Makros kompakt in vier Spalten (Vorschau der Menge) */
+.macros--compact {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.macros--compact .macro__name {
+  font-size: var(--text-xs);
+}
+
+.macros--compact .macro__value {
+  margin: 2px 0 0;
+  font-size: var(--text-md);
+}
+
+/* ---- Eintrag als antippbare Zeile ----------------------------------- */
+.entry__button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+}
+
+.entry__button:active {
+  opacity: 0.6;
 }

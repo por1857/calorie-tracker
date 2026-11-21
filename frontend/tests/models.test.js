@@ -14,7 +14,9 @@ import {
   createGoals,
   markDeleted,
   isActive,
+  suggestMeal,
   DEFAULT_GOALS,
+  MEAL_IDS,
 } from '../js/models.js';
 
 /** Feste Uhr für Tests: jede Abfrage eine Sekunde später. */
@@ -157,6 +159,32 @@ describe('Einträge', () => {
     assert.equal(entry.grams, null);
     assert.equal(entry.name, 'Schnelleintrag');
     assert.deepEqual([entry.kcal, entry.protein, entry.carbs, entry.fat], [250, 10, 0, 0]);
+  });
+});
+
+describe('suggestMeal', () => {
+  const at = (hours, minutes = 0) => new Date(2026, 10, 21, hours, minutes);
+
+  test('schlägt die Mahlzeit passend zur Uhrzeit vor', () => {
+    assert.equal(suggestMeal(at(7, 30)), 'breakfast');
+    assert.equal(suggestMeal(at(12, 15)), 'lunch');
+    assert.equal(suggestMeal(at(19)), 'dinner');
+  });
+
+  test('zwischen den Mahlzeiten und in der Nacht: Snack', () => {
+    assert.equal(suggestMeal(at(16)), 'snack');
+    assert.equal(suggestMeal(at(23)), 'snack');
+    assert.equal(suggestMeal(at(2)), 'snack');
+  });
+
+  test('Grenzen: Beginn zählt dazu, Ende nicht', () => {
+    assert.equal(suggestMeal(at(10, 29)), 'breakfast');
+    assert.equal(suggestMeal(at(10, 30)), 'lunch');
+    assert.equal(suggestMeal(at(21, 30)), 'snack');
+  });
+
+  test('jeder Vorschlag ist eine gültige Mahlzeit', () => {
+    for (let hour = 0; hour < 24; hour++) assert.ok(MEAL_IDS.includes(suggestMeal(at(hour))));
   });
 });
 

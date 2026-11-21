@@ -4,7 +4,8 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { toDateKey, fromDateKey, addDays } from '../js/dates.js';
-import { formatKcal, formatGrams, formatDayHeading } from '../js/format.js';
+import { formatKcal, formatGrams, formatAmount, formatDayHeading, formatInputNumber } from '../js/format.js';
+import { parseAmount } from '../js/calc.js';
 
 describe('toDateKey', () => {
   test('nutzt die lokale Zeit und füllt mit Nullen auf', () => {
@@ -66,6 +67,19 @@ describe('format', () => {
       title: 'Mittwoch',
       subtitle: '18. November',
     });
+  });
+
+  test('Mengen mit höchstens einer Nachkommastelle', () => {
+    assert.equal(formatAmount(50.5), '50,5');
+    assert.equal(formatAmount(80), '80');
+    assert.equal(formatAmount(1500), '1\u00A0500');
+  });
+
+  test('Zahlen für Eingabefelder: Komma, eine Nachkommastelle, wieder lesbar', () => {
+    assert.equal(formatInputNumber(80), '80');
+    assert.equal(formatInputNumber(12.45), '12,5');
+    assert.equal(formatInputNumber(1500), '1500');
+    assert.equal(parseAmount(formatInputNumber(37.5)), 37.5);
   });
 
   test('österreichische Monatsnamen', () => {

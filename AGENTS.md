@@ -124,10 +124,12 @@ Neue Fachbegriffe zuerst hier eintragen, dann im Code verwenden.
 
 ### 4.1 Frontend (`frontend/`)
 ```
-app.js  →  calc.js, dates.js, format.js, models.js   (Logik, ohne DOM)
-   └────→  storage/store.js  →  memory-store.js | indexeddb-store.js | sync-store.js
+app.js, ui/*.js  →  calc.js, dates.js, format.js, models.js, search.js   (Logik, ohne DOM)
+       └────────→  storage/store.js  →  memory-store.js | indexeddb-store.js | sync-store.js
 ```
-- **Logik-Module** (`calc`, `dates`, `format`, `models`) kennen kein HTML, kein
+- **Oberfläche** in `app.js` und `ui/` (ein Modul pro Fenster). Dort wird nur verbunden,
+  nicht gerechnet.
+- **Logik-Module** (`calc`, `dates`, `format`, `models`, `search`) kennen kein HTML, kein
   `document`, kein `fetch`. Nur so sind sie testbar.
 - **Daten nur über den Store.** `app.js` greift nie direkt auf IndexedDB oder `fetch` zu.
 - **Datensätze nur über `models.js`** erzeugen (`createFood`, `createEntryFromFood` …),

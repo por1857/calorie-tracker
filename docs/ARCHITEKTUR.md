@@ -24,7 +24,9 @@ Das Repo hat zwei Teile: `frontend/` (die App, JavaScript) und später
    ├── js/calc.js      Rechnen                       ┐
    ├── js/dates.js     Tage "JJJJ-MM-TT"             │ mit Tests,
    ├── js/format.js    Anzeige (Zahlen, Daten)       │ ohne HTML
-   ├── js/models.js    Datensätze erzeugen + prüfen  ┘
+   ├── js/models.js    Datensätze erzeugen + prüfen  │
+   ├── js/search.js    Lebensmittel suchen           ┘
+   ├── js/ui/entry-sheet.js  Fenster "Eintrag hinzufügen"
    └── js/storage/store.js   die EINE Tür zu den Daten
           ├── memory-store.js     Arbeitsspeicher (Demo, Tests, Notfall)
           ├── indexeddb-store.js  dauerhaft im iPhone (Standard)
@@ -60,6 +62,9 @@ kalorien-tracker/
     │   ├── dates.js          Tages-Schlüssel
     │   ├── format.js         Anzeigeformat
     │   ├── models.js         Datenmodell und Eingabeprüfung
+    │   ├── search.js         Suche (Umlaute, mehrere Wörter)
+    │   ├── ui/
+    │   │   └── entry-sheet.js    Fenster "Eintrag hinzufügen"
     │   └── storage/
     │       ├── store.js          Schnittstelle + Auswahl des Stores
     │       ├── memory-store.js   Store im Arbeitsspeicher
@@ -138,8 +143,8 @@ Domain in Phase 2), braucht Export und Import (Schritt 7).
 - [x] Schritt 1: Grundgerüst, Styleguide, Rechenlogik mit Tests
 - [x] Vorbereitung: Datenmodell für Mehrbenutzer, austauschbarer Store
 - [x] Schritt 2: `indexeddb-store.js`, dauerhaft speichern
-- [ ] Schritt 3: Eintrag hinzufügen (Lebensmittel wählen, Gramm eingeben)
-- [ ] Schritt 4: Lebensmittel anlegen, bearbeiten, löschen
+- [x] Schritt 3: Eintrag hinzufügen (Lebensmittel suchen, Gramm eingeben), Eintrag löschen
+- [ ] Schritt 4: Lebensmittel anlegen (erledigt), bearbeiten und löschen im Tab "Lebensmittel"
 - [ ] Schritt 5: Schnelleintrag, Einträge bearbeiten und löschen
 - [ ] Schritt 6: Ziele einstellen
 - [ ] Schritt 7: Export/Import als JSON (Backup)
