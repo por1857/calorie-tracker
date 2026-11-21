@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="de-AT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Browser-Tests</title>
+  <!--
+    Führt den Store-Vertragstest im Browser aus, mit echtem IndexedDB.
+    Lokal:  npm start, dann /tests/browser.html öffnen
+    iPhone: <deine-adresse>/tests/browser.html in Safari öffnen
+
+    Die Import-Map leitet "node:test" und "node:assert/strict" auf kleine
+    Ersatzmodule um, damit dieselbe Testdatei in Node UND im Browser läuft.
+  -->
+  <script type="importmap">
+    {
+      "imports": {
+        "node:test": "./browser/node-test-shim.js",
+        "node:assert/strict": "./browser/assert-shim.js"
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="browser/browser-tests.css">
+  <script type="module" src="./browser/run.js"></script>
+</head>
+<body>
+  <main class="tests">
+    <h1 class="tests__title">Browser-Tests</h1>
+    <p class="tests__summary" id="summary" data-state="running">Tests laufen …</p>
+    <ul class="tests__list" id="results"></ul>
+  </main>
+</body>
+</html>

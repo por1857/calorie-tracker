@@ -36,7 +36,10 @@ npm start    # lokaler Server, Adresse steht im Terminal
 ```
 
 `npm start` zeigt auch eine **Network**-Adresse für das iPhone im selben WLAN.
-Mit `?demo` am Ende der Adresse gibt es Beispieldaten.
+Mit `?demo` am Ende der Adresse gibt es Beispieldaten (nur im Arbeitsspeicher).
+
+Den Speicher mit echtem IndexedDB testet `/tests/browser.html`, lokal und auf
+GitHub Pages, auch direkt in Safari am iPhone.
 
 ## Veröffentlichen
 
@@ -44,7 +47,7 @@ Jeder Push auf `main` startet die GitHub Action **Frontend**: Sie führt die
 Tests aus und veröffentlicht die App nur, wenn alle grün sind.
 Einmalig einrichten: Repo → **Settings → Pages → Source: GitHub Actions**.
 
-Adresse: `https://DEIN-NAME.github.io/kalorien-tracker/`
+Adresse: `https://por1857.github.io/calorie-tracker/`
 
 ## Anpassen
 

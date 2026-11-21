@@ -44,8 +44,9 @@ Stand im Repo prüfen:
 ### 0.3 Befehle
 ```powershell
 # Frontend (im Ordner frontend)
-npm test                  # alle Tests
+npm test                  # alle Tests in Node
 npm start                 # lokaler Server, Adresse im Terminal
+# Speicher-Tests mit echtem IndexedDB: /tests/browser.html im Browser öffnen
 
 # Backend (im Ordner backend, sobald angelegt)
 .\gradlew.bat test
@@ -131,7 +132,10 @@ app.js  →  calc.js, dates.js, format.js, models.js   (Logik, ohne DOM)
 - **Daten nur über den Store.** `app.js` greift nie direkt auf IndexedDB oder `fetch` zu.
 - **Datensätze nur über `models.js`** erzeugen (`createFood`, `createEntryFromFood` …),
   nie von Hand.
-- Jeder neue Store besteht den Vertragstest `tests/store-contract.js`.
+- Jeder neue Store besteht den Vertragstest `tests/store-contract.js`,
+  in Node und im Browser (`tests/browser.html`).
+- **Aufbau der IndexedDB nur über neue Stufen in `MIGRATIONS`** ändern, nie eine
+  bestehende Stufe bearbeiten (wie Flyway, Abschnitt 8).
 
 ### 4.2 Backend (`backend/`, Phase 2)
 Vereinfacht gegenüber dem Teamprojekt: **nach Fachbereich gegliedert**, darin klare Rollen.

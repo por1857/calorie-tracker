@@ -4,9 +4,9 @@
  * Die App spricht nur mit einem "Store". Wie er speichert, ist ihr egal.
  * Dadurch können wir den Speicher austauschen, ohne die App umzubauen:
  *
- *   jetzt      MemoryStore     im Arbeitsspeicher (weg nach Neuladen)
- *   Schritt 2  IndexedDBStore  dauerhaft im iPhone
- *   Phase 2    SyncStore       iPhone + Abgleich mit dem Java-Backend
+ *   MemoryStore     im Arbeitsspeicher (Demo-Modus, Tests, Notfall)
+ *   IndexedDBStore  dauerhaft im iPhone (Standard seit Schritt 2)
+ *   SyncStore       Phase 2: iPhone + Abgleich mit dem Java-Backend
  *
  * Jeder Store hat genau diese Funktionen. Alle sind async (geben ein
  * Promise zurück), weil IndexedDB und Cloud nicht sofort antworten.
@@ -14,6 +14,9 @@
  * jeder neue Store muss diese Tests bestehen.
  *
  * @typedef {object} Store
+ *
+ * @property {boolean} isPersistent
+ *   true = Daten bleiben nach dem Schließen erhalten
  *
  * Lebensmittel (geteilt):
  * @property {() => Promise<object[]>} listFoods
@@ -44,14 +47,41 @@
  */
 
 import { createMemoryStore } from './memory-store.js';
+import { createIndexedDBStore } from './indexeddb-store.js';
 
 /**
  * Öffnet den Store, den die App benutzt.
- * In Schritt 2 wird hier auf createIndexedDBStore() umgestellt.
  *
- * @param {object} [options] wird an den Store weitergegeben (z. B. now für Tests)
+ * Normalfall: IndexedDB (dauerhaft). Klappt das nicht (sehr alter Browser,
+ * manche private Fenster), arbeitet die App im Arbeitsspeicher weiter,
+ * statt gar nicht zu starten. store.isPersistent sagt, was gilt.
+ *
+ * @param {{temporary?: boolean}} [options]
+ *   temporary: true = bewusst nur Arbeitsspeicher (Demo-Modus)
  * @returns {Promise<Store>}
  */
-export async function openStore(options) {
-  return createMemoryStore(options);
+export async function openStore({ temporary = false } = {}) {
+  if (temporary) return createMemoryStore();
+
+  try {
+    const store = await createIndexedDBStore();
+    requestPersistentStorage();
+    return store;
+  } catch (error) {
+    console.warn('Dauerhaftes Speichern nicht möglich, nutze Arbeitsspeicher.', error);
+    return createMemoryStore();
+  }
+}
+
+/**
+ * Bittet den Browser, unsere Daten nicht automatisch zu löschen, wenn der
+ * Speicher knapp wird. Ob er zustimmt, entscheidet der Browser selbst;
+ * ein Backup (Schritt 7) bleibt trotzdem wichtig.
+ */
+function requestPersistentStorage() {
+  const storage = globalThis.navigator?.storage;
+  if (!storage?.persist) return;
+  storage.persisted()
+    .then((isPersisted) => isPersisted || storage.persist())
+    .catch(() => {}); // kein Problem, wenn es nicht klappt
 }

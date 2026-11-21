@@ -24,6 +24,8 @@ export function createMemoryStore({ now = systemClock } = {}) {
   const copy = (value) => (value == null ? value : structuredClone(value));
 
   const store = {
+    isPersistent: false, // nach dem Neuladen ist alles weg
+
     // ---- Lebensmittel ------------------------------------------------------
     async listFoods() {
       return [...foods.values()]

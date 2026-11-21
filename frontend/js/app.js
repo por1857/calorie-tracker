@@ -6,10 +6,10 @@
  * Datenfluss:   Store  →  state  →  render()  →  HTML
  *               Bedienung ändert den Store, danach wird neu gezeichnet.
  *
- * Stand Schritt 1: Daten liegen im MemoryStore (nach Neuladen weg).
- * In Schritt 2 wird nur js/storage/store.js umgestellt – diese Datei bleibt.
+ * Daten liegen dauerhaft im iPhone (IndexedDB, siehe js/storage/store.js).
  *
  * Tipp: Mit "?demo" am Ende der Adresse gibt es Beispieldaten für heute.
+ * Die liegen nur im Arbeitsspeicher und berühren deine echten Daten nie.
  *
  * SICHERHEITSREGEL: Text immer mit .textContent setzen, NIE mit .innerHTML.
  * Lebensmittelnamen kommen später auch von Freunden – fremder Text darf
@@ -206,10 +206,17 @@ function bindEvents() {
 // ---- Start --------------------------------------------------------------
 
 async function start() {
-  store = await openStore();
-  if (new URLSearchParams(location.search).has('demo')) await seedDemo();
+  // Demo-Daten nur im Arbeitsspeicher, damit sie nie in deine echten Daten geraten
+  const isDemo = new URLSearchParams(location.search).has('demo');
+  store = await openStore({ temporary: isDemo });
+  if (isDemo) await seedDemo();
+
   bindEvents();
   await render();
+
+  if (!isDemo && !store.isPersistent) {
+    showToast('Speichern geht hier nicht. Einträge sind nach dem Schließen weg.');
+  }
 }
 
 start().catch((error) => {

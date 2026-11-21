@@ -26,8 +26,8 @@ Das Repo hat zwei Teile: `frontend/` (die App, JavaScript) und später
    ├── js/format.js    Anzeige (Zahlen, Daten)       │ ohne HTML
    ├── js/models.js    Datensätze erzeugen + prüfen  ┘
    └── js/storage/store.js   die EINE Tür zu den Daten
-          ├── memory-store.js     jetzt: Arbeitsspeicher
-          ├── indexeddb-store.js  Schritt 2: dauerhaft im iPhone
+          ├── memory-store.js     Arbeitsspeicher (Demo, Tests, Notfall)
+          ├── indexeddb-store.js  dauerhaft im iPhone (Standard)
           └── sync-store.js       Phase 2: iPhone + Java-Backend
 ```
 
@@ -62,10 +62,13 @@ kalorien-tracker/
     │   ├── models.js         Datenmodell und Eingabeprüfung
     │   └── storage/
     │       ├── store.js          Schnittstelle + Auswahl des Stores
-    │       └── memory-store.js   Store im Arbeitsspeicher
+    │       ├── memory-store.js   Store im Arbeitsspeicher
+    │       └── indexeddb-store.js  Store in IndexedDB (dauerhaft)
     ├── tests/
     │   ├── *.test.js         Unit-Tests (npm test)
-    │   └── store-contract.js Vertragstest für alle Stores
+    │   ├── store-contract.js Vertragstest für alle Stores
+    │   ├── browser.html      Vertragstest im Browser (echtes IndexedDB)
+    │   └── browser/          Ersatz für node:test im Browser
     └── icons/                App-Icons (icon.svg ist die Vorlage)
 ```
 
@@ -118,13 +121,23 @@ Erzeugt werden Datensätze nur über die Funktionen in `js/models.js`.
 Listen blenden ihn aus. So erfahren in Phase 2 auch andere Geräte vom Löschen,
 und alte Einträge finden ihr Lebensmittel weiterhin.
 
+## Speicher im iPhone (IndexedDB)
+
+Datenbank `kalorien-tracker` mit drei Bereichen: `foods`, `entries` (mit
+Index `dayKey`) und `settings` (Ziele). Der Aufbau ist versioniert wie
+Flyway-Migrationen: `MIGRATIONS` in `indexeddb-store.js`. Eine Stufe, die
+schon auf dem iPhone lief, wird nie geändert; Änderungen kommen als neue Stufe.
+
+Die Daten gehören zur Adresse der App. Wer sie wechselt (z. B. auf die eigene
+Domain in Phase 2), braucht Export und Import (Schritt 7).
+
 ## Roadmap
 
 **Phase 1: Einzelversion**
 
 - [x] Schritt 1: Grundgerüst, Styleguide, Rechenlogik mit Tests
 - [x] Vorbereitung: Datenmodell für Mehrbenutzer, austauschbarer Store
-- [ ] Schritt 2: `indexeddb-store.js`, dauerhaft speichern
+- [x] Schritt 2: `indexeddb-store.js`, dauerhaft speichern
 - [ ] Schritt 3: Eintrag hinzufügen (Lebensmittel wählen, Gramm eingeben)
 - [ ] Schritt 4: Lebensmittel anlegen, bearbeiten, löschen
 - [ ] Schritt 5: Schnelleintrag, Einträge bearbeiten und löschen
